@@ -1,5 +1,10 @@
+APP_NAME := tarea
+
 build:
-	go build -o tarea main.go
+	go build -o ${APP_NAME} main.go
+
+clean:
+	rm -f ${APP_NAME}
 
 bin:
 	go install
