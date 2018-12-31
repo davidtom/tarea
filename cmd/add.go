@@ -1,10 +1,11 @@
 package cmd
 
 import (
-	"fmt"
+	"strings"
 
 	"github.com/spf13/cobra"
 
+	"github.com/davidtom/tarea/pkg/storage"
 	"github.com/davidtom/tarea/pkg/task"
 )
 
@@ -26,8 +27,10 @@ var addCmd = &cobra.Command{
 }
 
 func addTask(cmd *cobra.Command, args []string) {
-	// TODO: pass in all flags as second arg
-	t := task.NewTask(args[0], priority)
+	d := strings.Join(args, " ")
 
-	fmt.Printf("%+v", *t)
+	// TODO: pass in all flags as second arg
+	t := task.NewTask(d, priority)
+
+	storage.Set(t)
 }

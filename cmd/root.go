@@ -7,23 +7,18 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// Task does something
-// TODO: doc string
-// TODO: where do I define this? main? pkg? this doesn't seem like the best spot
-type Task struct {
-	description string
-}
-
 // TODO: do either gopkg.* files belong in .gitignore?
+// TODO: best way to add vendor to .gitignore?
 
 // TODO: which flags should be persistent (global) and which local?
 var (
+	// define persistent/global flags
 	priority string
 )
 
 func init() {
 	// TODO: make sure my usage strings follow conventions (see blog post)
-	// TODO: make default priority configurable
+	// TODO: make default priority configurable via config
 	rootCmd.PersistentFlags().StringVarP(&priority, "priority", "p", "medium", "task priority level [default: medium")
 }
 
@@ -32,9 +27,6 @@ var rootCmd = &cobra.Command{
 	Short: "tarea is a command line todo list that goes where you do",
 	Long: `tarea is a command line todo list that goes where you do.
 Built with Go`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("root command")
-	},
 }
 
 // Execute - runs all commands
