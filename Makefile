@@ -8,3 +8,5 @@ clean:
 
 bin:
 	go install
+
+# TODO: add other tasks from go-t repo (ie lint and fmt)
