@@ -33,4 +33,6 @@ func addTask(cmd *cobra.Command, args []string) {
 	t := task.NewTask(d, priority)
 
 	storage.Set(t)
+
+	// TODO: add a log statement to indicate it was succesful? Need a printer package first
 }

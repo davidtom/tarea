@@ -2,7 +2,6 @@ package storage
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 
 	"github.com/davidtom/tarea/pkg/config"
@@ -43,9 +42,7 @@ func (s *LocalStorage) SetTask(t *task.Task) {
 		panic(unmarshErr)
 	}
 
-	fmt.Println(tasks)
 	tasks = append(tasks, *t)
-	fmt.Println(tasks)
 
 	writeBs, marshErr := json.Marshal(tasks)
 	if marshErr != nil {
@@ -54,23 +51,7 @@ func (s *LocalStorage) SetTask(t *task.Task) {
 
 	// TODO: understand this permission
 	if writeErr := ioutil.WriteFile(c.TaskFile, writeBs, 0666); writeErr != nil {
+		// TODO: error handling
 		panic(writeErr)
 	}
-	// errr := ioutil.WriteFile(c.TaskFile, bs, 0666)
-	// if err != nil {
-	// 	// TODO: error handling
-	// 	panic(errr)
-	// }
-}
-
-func readFile(filename string) *[]byte {
-	// TODO: where should this file be saved?
-	bs, err := ioutil.ReadFile(filename)
-
-	if err != nil {
-		// TODO: handle errors better?
-		panic(err)
-	}
-
-	return &bs
 }
