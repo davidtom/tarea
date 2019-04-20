@@ -2,6 +2,7 @@ package task
 
 // Task represents a task used throughout the application
 type Task struct {
+	ID          int
 	Description string
 	Priority    string
 }

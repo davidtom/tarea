@@ -25,7 +25,7 @@ func Get() []task.Task {
 // LocalStorage Methods
 // ********************
 
-// SetTask persists a task locally
+// GetTask returns a list of all persisted tasks
 func (s *LocalStorage) GetTask() []task.Task {
 	var tasks []task.Task
 
@@ -42,36 +42,27 @@ func (s *LocalStorage) GetTask() []task.Task {
 		panic(unmarshErr)
 	}
 
-	return tasks
-
-	// fmt.Println(tasks)
-	// tasks = append(tasks, *t)
-	// fmt.Println(tasks)
-
-	// writeBs, marshErr := json.Marshal(tasks)
-	// if marshErr != nil {
-	// 	panic(marshErr)
-	// }
-
-	// // TODO: understand this permission
-	// if writeErr := ioutil.WriteFile(c.TaskFile, writeBs, 0666); writeErr != nil {
-	// 	panic(writeErr)
-	// }
-	// // errr := ioutil.WriteFile(c.TaskFile, bs, 0666)
-	// // if err != nil {
-	// // 	// TODO: error handling
-	// // 	panic(errr)
-	// // }
-}
-
-func readFile(filename string) *[]byte {
-	// TODO: where should this file be saved?
-	bs, err := ioutil.ReadFile(filename)
-
-	if err != nil {
-		// TODO: handle errors better?
-		panic(err)
+	// TODO: reassign ids at each read to keep them updated (see task warrior's, quick demo)
+	// this means - I think - that each time we read the tasks for list, we need to update the ids
+	// and re-save; this ensures that the ids that a user sees stay valid, so that they can delete/complete
+	// multiple tasks without needing to figure out new ids
+	// I can make this entire process easier by abstracting the read/write operation
+	// maybe something like tasks.ReadFromFile(filename), tasks.WriteToFile(filename)
+	for i, t := range tasks {
+		t.ID = i + 1
+		tasks[i] = t
 	}
 
-	return &bs
+	writeBs, marshErr := json.Marshal(tasks)
+	if marshErr != nil {
+		panic(marshErr)
+	}
+
+	// TODO: understand this permission
+	if writeErr := ioutil.WriteFile(c.TaskFile, writeBs, 0666); writeErr != nil {
+		// TODO: error handling
+		panic(writeErr)
+	}
+
+	return tasks
 }

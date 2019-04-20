@@ -9,7 +9,7 @@ import (
 )
 
 // Set persists a task in the appropriate storage location
-func Set(t *task.Task) {
+func Set(t *task.Task) int {
 	var storage Storage
 
 	// determine correct storage type based on config
@@ -18,7 +18,9 @@ func Set(t *task.Task) {
 	storage = new(LocalStorage)
 
 	// persist task
-	storage.SetTask(t)
+	id := storage.SetTask(t)
+
+	return id
 }
 
 // ********************
@@ -26,7 +28,7 @@ func Set(t *task.Task) {
 // ********************
 
 // SetTask persists a task locally
-func (s *LocalStorage) SetTask(t *task.Task) {
+func (s *LocalStorage) SetTask(t *task.Task) int {
 	var tasks []task.Task
 
 	c := config.LoadConfig()
@@ -42,6 +44,10 @@ func (s *LocalStorage) SetTask(t *task.Task) {
 		panic(unmarshErr)
 	}
 
+	// when adding a new task, its id will be automatically assigned based on the length of tasks
+	id := len(tasks) + 1
+	t.ID = id
+
 	tasks = append(tasks, *t)
 
 	writeBs, marshErr := json.Marshal(tasks)
@@ -54,4 +60,6 @@ func (s *LocalStorage) SetTask(t *task.Task) {
 		// TODO: error handling
 		panic(writeErr)
 	}
+
+	return id
 }

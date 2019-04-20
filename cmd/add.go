@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -32,7 +33,8 @@ func addTask(cmd *cobra.Command, args []string) {
 	// TODO: pass in all flags as second arg
 	t := task.NewTask(d, priority)
 
-	storage.Set(t)
+	id := storage.Set(t)
 
 	// TODO: add a log statement to indicate it was succesful? Need a printer package first
+	fmt.Printf("Added task %v\n", id)
 }

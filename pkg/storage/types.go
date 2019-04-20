@@ -7,7 +7,7 @@ import (
 // Storage interfaces abstract storage methods away from storage location (ie local or remote)
 type Storage interface {
 	GetTask() []task.Task
-	SetTask(t *task.Task)
+	SetTask(t *task.Task) int
 	// update()
 	// delete()
 }
